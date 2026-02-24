@@ -518,7 +518,8 @@ class Item(BaseItem):
         return r
 
     def get_review(self) -> Response:
-        """Get reviews for this item.
+        """Get review written by the current user for this item.
+        Use `Item.reviews` or `Item.item_metadata['reviews']` to get all reviews for this item.
 
         :returns: :class:`requests.Response` containing review data as JSON.
         :raises HTTPError: If the request fails.
@@ -627,7 +628,7 @@ class Item(BaseItem):
         if stars:
             d['stars'] = stars
         a = S3Auth(self.session.access_key, self.session.secret_key)
-        r = self.session.post(u, params=p, data=json.dumps(d), auth=a)
+        r = self.session.post(u, params=p, json=d, auth=a)
         r.raise_for_status()
         return r
 
